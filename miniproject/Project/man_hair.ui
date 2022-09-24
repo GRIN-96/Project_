@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>879</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>881</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);
+font: 75 18pt &quot;맑은 고딕&quot;, ;
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>메이플스토리 헤어 월드컵 ( 남성 )</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>250</y>
+     <width>281</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 12pt &quot;맑은 고딕&quot;;
+background-color: rgb(255, 255, 255);
+
+  text-align: center;
+  border: 3px solid green;</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>라운드를 선택해주세요 : D</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>64강</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>32강</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>16강</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>8강</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>4강</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2강</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>450</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 190, 11, 255), stop:1 rgba(251, 86, 7, 255));
+	border-radius: 20px;</string>
+   </property>
+   <property name="text">
+    <string>처음으로</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>260</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	color: rgb(58, 134, 255);
+	background-color: white;
+	border: 2px solid rgb(0, 255, 127);
+	border-radius: 20px;
+}</string>
+   </property>
+   <property name="text">
+    <string>s t a r t</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>140</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string> 라운드 셋팅</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>150</y>
+     <width>741</width>
+     <height>171</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>190</y>
+     <width>471</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 12pt &quot;나눔고딕 ExtraBold&quot;;</string>
+   </property>
+   <property name="text">
+    <string> 몇 강인지 선택하세요 :)   ( 128강 ~ 2강)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_2">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>360</y>
+     <width>231</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image:url(&quot;C:/Users/playdata/Desktop/test/pokemon.png&quot;);</string>
+   </property>
+  </widget>
+  <zorder>graphicsView</zorder>
+  <zorder>lineEdit</zorder>
+  <zorder>comboBox</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>pushButton_2</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>graphicsView_2</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
