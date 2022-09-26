@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 import os
 from PyQt5 import QtWidgets, uic
 import random
+from PyQt5.QtGui import QPixmap
 
 
 # 파일 불러오는 함수 생성
@@ -107,11 +108,11 @@ class NewWindw(QDialog,QWidget,form_secondwindow):
         self.setupUi(self)
         self.show()
 
-
         # 월드컵 시작
-        a = WorldCup()
-        a.db_setting()
-        a.__init__()
+        self.WorldCup()
+        global round
+        round = rounds
+        self.select_items()
 
         # 이벤트 함수 조건
         self.pushButton.clicked.connect(self.btn_second_to_main)
@@ -119,147 +120,125 @@ class NewWindw(QDialog,QWidget,form_secondwindow):
     def btn_second_to_main(self):
         self.close()  # 클릭시 종료됨.
         # print(play)
+        # print(fname)
+        # print(c0)
+
+    def WorldCup(self):
+        global c1, c2, filenamelist, c4, c8, c16, c32, c0, c_cup, fname
+        filenamelist = os.listdir('C:/Users/playdata/Desktop/test/Man_hair')
+        c1 = -1  # 승자
+        c2 = []  # 2강
+        c4 = []  # 4강
+        c8 = []  # 8강
+        c16 = []  # 16강
+        c32 = []  # 32강
+        c0 = []  # 처음에 사용자가 입력한 round에 따른 초기화 값을 저정함.
+        c_cup = {1: c1, 2: c2, 4: c4, 8: c8, 16: c16, 32: c32}
+        fname = []  # 파일이름
+
+        for filenames in filenamelist:
+            fname.append(filenames)
+            random.shuffle(fname)
 
 
-class WorldCup(NewWindw):
-    # global c1, c2, filenamelist, c4, c8, c16, c32, c64, c0, c_cup, fname
-    filenamelist = os.listdir('C:/Users/playdata/Desktop/test/Man_hair')
-    c1 = -1  # 승자
-    c2 = []  # 2강
-    c4 = []  # 4강
-    c8 = []  # 8강
-    c16 = []  # 16강
-    c32 = []  # 32강
-    c64 = []  # 64강
-    c0 = []  # 처음에 사용자가 입력한 round에 따른 초기화 값을 저정함.
-    c_cup = {1: c1, 2: c2, 4: c4, 8: c8, 16: c16, 32: c32, 64: c64}
-    fname = []  # 파일이름
+        # 라운드 셋팅
+        global rounds
+
+        # 선택값으로 초기화하기
+        rounds = int(play[:-1]) # 2,4,8,16 ...
+        for i in range(rounds):
+            c0.append(i)
+        c_cup[rounds] = c0  # 초기화한 값
 
 
-    for filenames in filenamelist:
-        fname.append(filenames)
-        random.shuffle(fname)
 
-    ### 그림 파일 이름을 받아와서 랜덤하게 섞이.
-    def db_setting(self):
-        for filenames in self.filenamelist:
-            self.fname.append(filenames)
-            random.shuffle(self.fname)
-
-
-    def __init__(self,round):
-        super().__init__()
-
-        self.select_items(round)
-        if round == 2:
-            NewWindw.textEdit.setText('결승전 시작')
-        else:
-            random.shuffle(self.c_cup[round])  # 현재 round 시작 전에 리스트의 값을 랜덤하게 섞어준다.
+        # 게임을 수행하는 부분.
+    def select_items(self):  # round로 올 수 있는 값 : 64/32/16/8/4/2
+        global get_name
+        # random.shuffle(c_cup[round])  # 현재 round 시작 전에 리스트의 값을 랜덤하게 섞어준다.
         get_name = lambda x: x.split('.')[0]  # 파일명만 가져오도록 하는 간단한 함수.
+        global j
+        print(c_cup)
 
-        for i in range(0, round, 2):
-            NewWindw.textEdit.setText(f'{round}강 {int((i + 2) / 2)}/{int(round / 2)}')
-            global img1
-            global img2
-            img1 = get_name(self.fname[self.c_cup[round][i]])
-            img2 = get_name(self.fname[self.c_cup[round][i + 1]])
-            NewWindw.textEdit_3.setText(img1)
-            NewWindw.textEdit_4.setText(img2)
+        j=0
+        self.select_items2()
 
-            ### 사진 보여주는 코드 ###
-            ### 첫번 째 사진
-            NewWindw.pushButton_2.setStyleSheet(f"border-image:url(\'C:/Users/playdata/Desktop/test/data/{self.fname[self.c_cup[round][i]]}');")
-            ### 두번 째 사진
-            NewWindw.pushButton_3.setStyleSheet(f"border-image:url(\'C:/Users/playdata/Desktop/test/data/{self.fname[self.c_cup[round][i+1]]}');")
 
-            ### 사용자에게 입력받기 ###
-            NewWindw.pushButton_2.clicked.connect(self.selected1)
-            NewWindw.pushButton_3.clicked.connect(self.selected2)
+    def select_items2(self,round):
 
-            if round == 2:  # 결승전일 때
-                NewWindw.pushButton_2.clicked.connect(self.final1)
-                NewWindw.pushButton_3.clicked.connect(self.final2)
+        global img1,img2,j
 
-        if round != 2:
+        self.textEdit.setText(f'{round}강 {int((j + 2) / 2)}/{int(round / 2)}')
+        img1 = get_name(fname[c_cup[round][j]])
+        img2 = get_name(fname[c_cup[round][j + 1]])
+        self.textEdit_3.setText(img1)
+        self.textEdit_4.setText(img2)
+
+
+        ## 사진 보여주는 코드 ###
+        # 첫번 째 사진
+        self.pushButton_2.setStyleSheet(f"border-image:url(\'C:/Users/playdata/Desktop/test/Man_hair/{fname[c_cup[round][j]]}\');",)
+        ### 두번 째 사진
+        self.pushButton_3.setStyleSheet(f"border-image:url(\'C:/Users/playdata/Desktop/test/Man_hair/{fname[c_cup[round][j+1]]}\');")
+
+
+
+                    ### 사용자에게 입력받기 ###
+
+        self.pushButton_2.clicked.connect(self.selected1)
+        self.pushButton_3.clicked.connect(self.selected2)
+
+
+
+
+    #첫번째 이미지를 택한 경우
+    def selected1(self):
+        global j,round
+        c_cup[int(round / 2)].append(c_cup[round][j])  # 현재 round에서 선택한 결과를 다음 round의 리스트에 추가(append)한다.
+        j += 2
+
+        print(c_cup)
+        self.textEdit.setText(f'{round}강 {int((j + 2) / 2)}/{int(round / 2)}')
+        self.textEdit_3.setText(get_name(fname[c_cup[round][j]]))
+        self.textEdit_4.setText(get_name(fname[c_cup[round][j + 1]]))
+
+        ## 사진 보여주는 코드 ###
+        # 첫번 째 사진
+        self.pushButton_2.setStyleSheet(
+            f"border-image:url(\'C:/Users/playdata/Desktop/test/Man_hair/{fname[c_cup[round][j]]}\');", )
+        ### 두번 째 사진
+        self.pushButton_3.setStyleSheet(
+            f"border-image:url(\'C:/Users/playdata/Desktop/test/Man_hair/{fname[c_cup[round][j + 1]]}\');")
+
+        if j == round:
             round = int(round / 2)
+            j = 0
             self.select_items(round)
 
 
 
-    # ### 게임을 수행하는 부분.
-    # def select_items(self,round):  # round로 올 수 있는 값 : 64/32/16/8/4/2
-    #     global get_name
-
-        # if round == 2:
-        #     self.textEdit.setText('결승전 시작')
-        # else:
-        #     random.shuffle(self.c_cup[round])  # 현재 round 시작 전에 리스트의 값을 랜덤하게 섞어준다.
-        # get_name = lambda x: x.split('.')[0]  # 파일명만 가져오도록 하는 간단한 함수.
-        #
-        # for i in range(0, round, 2):
-        #     NewWindw.textEdit.setText(f'{round}강 {int((i + 2) / 2)}/{int(round / 2)}')
-        #     global img1
-        #     global img2
-        #     img1 = get_name(self.fname[self.c_cup[round][i]])
-        #     img2 = get_name(self.fname[self.c_cup[round][i + 1]])
-        #     NewWindw.textEdit_3.setText(img1)
-        #     NewWindw.textEdit_4.setText(img2)
-        #
-        #     ### 사진 보여주는 코드 ###
-        #     ### 첫번 째 사진
-        #     NewWindw.pushButton_2.setStyleSheet(f"border-image:url(\'C:/Users/playdata/Desktop/test/data/{self.fname[self.c_cup[round][i]]}');")
-        #     ### 두번 째 사진
-        #     NewWindw.pushButton_3.setStyleSheet(f"border-image:url(\'C:/Users/playdata/Desktop/test/data/{self.fname[self.c_cup[round][i+1]]}');")
-        #
-        #     ### 사용자에게 입력받기 ###
-        #     NewWindw.pushButton_2.clicked.connect(self.selected1)
-        #     NewWindw.pushButton_3.clicked.connect(self.selected2)
-        #
-        #     if round == 2:  # 결승전일 때
-        #         NewWindw.pushButton_2.clicked.connect(self.final1)
-        #         NewWindw.pushButton_3.clicked.connect(self.final2)
-        #
-        # if round != 2:
-        #     round = int(round / 2)
-        #     self.select_items(round)
-
-
-    #     # 첫번째 이미지를 택한 경우
-    def selected1(self):
-        self.c_cup[int(round / 2)].append(img1)  # 현재 round에서 선택한 결과를 다음 round의 리스트에 추가(append)한다.
     # 두번째 이미지를 택한 경우
     def selected2(self):
-        self.c_cup[int(round / 2)].append(img2)  # 현재 round에서 선택한 결과를 다음 round의 리스트에 추가(append)한다.
+        global j,round
+        c_cup[int(round / 2)].append(c_cup[round][j+1])  # 현재 round에서 선택한 결과를 다음 round의 리스트에 추가(append)한다.
+        j+=2
+        print(c_cup)
+        self.textEdit.setText(f'{round}강 {int((j + 2) / 2)}/{int(round / 2)}')
+        self.textEdit_3.setText(get_name(fname[c_cup[round][j]]))
+        self.textEdit_4.setText(get_name(fname[c_cup[round][j + 1]]))
 
+        ## 사진 보여주는 코드 ###
+        # 첫번 째 사진
+        self.pushButton_2.setStyleSheet(
+            f"border-image:url(\'C:/Users/playdata/Desktop/test/Man_hair/{fname[c_cup[round][j]]}\');", )
+        ### 두번 째 사진
+        self.pushButton_3.setStyleSheet(
+            f"border-image:url(\'C:/Users/playdata/Desktop/test/Man_hair/{fname[c_cup[round][j + 1]]}\');")
 
-    def round_setting(self):  # round수 선택 받고, 초기화하기
-        global round
-
-        self.db_setting()  # db 섞기
-        # 선택값으로 초기화하기
-        rounds = int(play[:-1]) # 2,4,8,16 ...
-        for round in range(rounds):
-            self.c0.append(round)
-        self.c_cup[rounds] = self.c0  # 초기화한 값
-        ## rounds 입력값에 따른 select_items 매서드 시작 ###
-        self.select_items(rounds)
-
-
-
-    def final1(self):
-        self.c_cup[int(round / 2)].append(img1)
-        self.hide()  # 메인윈도우 숨김
-        self.final = NewWindw_final()
-        self.final.exec()  # 두번째 창을 닫을 때 까지 기다림
-        self.close()  # 클릭시 종료됨.
-
-
-    def final2(self):
-        self.c_cup[int(round / 2)].append(img2)
-        self.hide()  # 메인윈도우 숨김
-        self.final = NewWindw_final()
-        self.final.exec()  # 두번째 창을 닫을 때 까지 기다림
-        self.close()  # 클릭시 종료됨.
+        if j == round:
+            round = int(round / 2)
+            j = 0
+            self.select_items(round)
 
 
 
@@ -298,6 +277,7 @@ class NewWindw_02(QDialog,QWidget,form_hair1):
 
 
 
+
 class NewWindw2(QDialog,QWidget,form_thrdwindow):
     def __init__(self):
         super(NewWindw2, self).__init__()
@@ -314,7 +294,7 @@ class NewWindw2(QDialog,QWidget,form_thrdwindow):
 
     def btn_second_to_main(self):
         self.close()  # 클릭시 종료됨.
-        print(play)
+
 
 
 
