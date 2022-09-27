@@ -36,6 +36,8 @@ form_output = uic.loadUiType("output.ui")[0]
 
 class auto_w(QMainWindow,form_class): #class name 변경
     def __init__(self):
+        global input_p
+        input_p = 0
         super().__init__()
         self.setupUi(self)
 
@@ -532,8 +534,8 @@ class NewWindw_final1(QDialog,QWidget,form_final):
     def btn_return(self):
         print("실행됨")
         self.hide()  # 메인윈도우 숨김
-        self.last1 = last_page()
-        self.last1.exec()  # 두번째 창을 닫을 때 까지 기다림
+        self.last11 = last_page()
+        self.last11.exec()  # 두번째 창을 닫을 때 까지 기다림
         self.close()  # 클릭시 종료됨.
 
 
@@ -549,10 +551,11 @@ class last_page(QDialog,QWidget,form_last):
         self.label_2.setStyleSheet(f"border-image:url(\'./i15523914217.jpg\');")
 
         self.lineEdit.setText(winner)
-        self.Label_1 = QLabel(self)
+        # self.Label_1 = QLabel(self)
         global input_p
-        self.graphicsView.setStyleSheet(f"border-image:url(\'{input_p}\');")
-        print("실행됨.")
+        if input_p != 0:
+            self.graphicsView.setStyleSheet(f"border-image:url(\'{input_p}\');")
+            print("실행됨.")
 
         # 변수명 변경
         self.pushButton_3.clicked.connect(self.filedialog_open)
