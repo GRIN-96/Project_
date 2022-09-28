@@ -21,6 +21,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_score, recall_score, f1_score
+from PySide2.QtWidgets import QMessageBox
 
 
 # 파일 불러오는 함수 생성
@@ -69,6 +70,7 @@ class auto_w(QMainWindow,form_class): #class name 변경
         self.pushButton.clicked.connect(self.man_hair)
         self.pushButton_2.clicked.connect(self.girl_hair)
         self.pushButton_4.clicked.connect(self.names)
+        self.lineEdit_2.returnPressed.connect(self.names)
         # button 클릭시 함수 수행
         self.pushButton_3.clicked.connect(self.fileopen)
         self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -122,9 +124,6 @@ class auto_w(QMainWindow,form_class): #class name 변경
             dload.save(img, f'{3}.jpg')
             self.graphicsView_2.setStyleSheet(f"border-image:url(\'3.jpg\');")
 
-        else:
-            print(response.status_code)
-            print("NOT FOUND ONE MORE TIME")
 
         global input_p
         input_p = '3.jpg'
@@ -626,6 +625,7 @@ class last_page(QDialog,QWidget,form_last):
         # 최종 코디 추천 프로그램 실행
         self.pushButton_4.clicked.connect(self.output1)
         self.pushButton_5.clicked.connect(self.names1)
+        self.lineEdit_2.returnPressed.connect(self.names1)
         self.pushButton_3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_5.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -780,7 +780,6 @@ class last_page(QDialog,QWidget,form_last):
         for i in range(len(url_list)):
             img = url_list[i]
             dload.save(img, f'{i}.jpg')
-        print("실행중 4")
 
         # 아이템 이름 추출
         global item_name
@@ -795,7 +794,6 @@ class last_page(QDialog,QWidget,form_last):
         for i in range(len(a)):
             item_name.append(a[i][0])
 
-        print(item_name)
 
         # 머신러닝이 끝나면 파일을 실행하기
         self.hide()  # 메인윈도우 숨김
@@ -875,7 +873,6 @@ class output(QDialog,QWidget,form_output):
 
 
         self.close()
-
 
 ############################ 실행함수 ########################################
 if __name__ == "__main__":
