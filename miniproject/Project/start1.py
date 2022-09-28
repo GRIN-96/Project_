@@ -49,7 +49,8 @@ form_output = uic.loadUiType("Ui/output.ui")[0]
 
 class auto_w(QMainWindow,form_class): #class name 변경
     def __init__(self):
-        global input_p, name, fname1
+        global input_p, name, fname1, face
+        face = 21078
         fname1 = 0
         name = 0
         input_p = 0
@@ -175,10 +176,6 @@ class NewWindw(QDialog,QWidget,form_secondwindow):
         self.setupUi(self)
         self.show()
 
-        # bgm
-        pygame.mixer.init()
-        pygame.mixer.music.load('bgm.mp3')
-        pygame.mixer.music.play()
 
         self.graphicsView.setStyleSheet(f"border-image:url(\'MaplePicture/pokemon.png\');")
         self.graphicsView_2.setStyleSheet(f"border-image:url(\'MaplePicture/map1.jpg\');")
@@ -198,7 +195,7 @@ class NewWindw(QDialog,QWidget,form_secondwindow):
 
 
     def WorldCup(self):
-        global c1, c2, filenamelist, c4, c8, c16, c32, c0, c_cup, fname
+        global c1, c2, filenamelist, c4, c8, c16, c32, c0, c_cup, fname, face
         filenamelist = os.listdir('Man_hair')
         c1 = []  # 승자
         c2 = []  # 2강
@@ -209,7 +206,7 @@ class NewWindw(QDialog,QWidget,form_secondwindow):
         c0 = []  # 처음에 사용자가 입력한 round에 따른 초기화 값을 저정함.
         c_cup = {1: c1, 2: c2, 4: c4, 8: c8, 16: c16, 32: c32}
         fname = []  # 파일이름
-
+        face = 21045
         for filenames in filenamelist:
             fname.append(filenames)
             random.shuffle(fname)
@@ -377,7 +374,6 @@ class NewWindw_02(QDialog,QWidget,form_hair1):
     def printShtname(self):
         global play
         play = self.comboBox.currentText()
-        print(self.comboBox.currentText())
 
 
 
@@ -388,10 +384,6 @@ class NewWindw2(QDialog,QWidget,form_thrdwindow):
         self.initUi()
         self.show()
 
-        # bgm
-        pygame.mixer.init()
-        pygame.mixer.music.load('bgm.mp3')
-        pygame.mixer.music.play()
 
         self.graphicsView.setStyleSheet(f"border-image:url(\'MaplePicture/pokemon.png\');")
         self.graphicsView_2.setStyleSheet(f"border-image:url(\'MaplePicture/map2.jpg\');")
@@ -558,20 +550,12 @@ class NewWindw_final(QDialog,QWidget,form_final):
         self.initUi()
         self.show()
 
-        # bgm
-        pygame.mixer.init()
-        pygame.mixer.music.load('bgm.mp3')
-        pygame.mixer.music.play()
-
-
 
         # 이벤트 함수 조건
         self.pushButton_2.clicked.connect(self.btn_second_to_main)
         self.pushButton_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
         # #우승자 페이지 화면
-        print(winner_p)
-        print(winner)
         self.graphicsView.setStyleSheet(f"border-image:url(\'Man_hair/{winner_p}\');")
         self.lineEdit.setText(winner)
 
@@ -579,7 +563,6 @@ class NewWindw_final(QDialog,QWidget,form_final):
         self.setupUi(self)
 
     def btn_second_to_main(self):
-        print("실행됨")
         self.hide()  # 메인윈도우 숨김
         self.last1 = last_page()
         self.last1.exec()  # 두번째 창을 닫을 때 까지 기다림
@@ -595,18 +578,11 @@ class NewWindw_final1(QDialog,QWidget,form_final):
         self.initUi()
         self.show()
 
-        # bgm
-        pygame.mixer.init()
-        pygame.mixer.music.load('bgm.mp3')
-        pygame.mixer.music.play()
-
         # 이벤트 함수 조건
         self.pushButton_2.clicked.connect(self.btn_return)
         self.pushButton_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
         # #우승자 페이지 화면
-        print(winner_p)
-        print(winner)
         self.graphicsView.setStyleSheet(f"border-image:url(\'Girl_hair/{winner_p}\');")
         self.lineEdit.setText(winner)
 
@@ -614,7 +590,6 @@ class NewWindw_final1(QDialog,QWidget,form_final):
         self.setupUi(self)
 
     def btn_return(self):
-        print("실행됨")
         self.hide()  # 메인윈도우 숨김
         self.last11 = last_page()
         self.last11.exec()  # 두번째 창을 닫을 때 까지 기다림
@@ -630,12 +605,6 @@ class last_page(QDialog,QWidget,form_last):
         self.initUi()
         self.show()
 
-        # bgm
-        pygame.mixer.init()
-        pygame.mixer.music.load('bgm.mp3')
-        pygame.mixer.music.play()
-
-
         self.label_2.setStyleSheet(f"border-image:url(\'MaplePicture/i15523914217.jpg\');")
 
         self.lineEdit.setText(winner)
@@ -648,7 +617,6 @@ class last_page(QDialog,QWidget,form_last):
 
         if fname1 !=0 :
             self.graphicsView.setStyleSheet(f"border-image:url(\'{input_p}\');")
-            print("실행됨.")
 
 
 
@@ -668,10 +636,8 @@ class last_page(QDialog,QWidget,form_last):
 
     def filedialog_open(self):
         fnames = QFileDialog.getOpenFileName(self)
-        print(fnames)
         global input_p
         input_p = fnames[0]
-        print(input_p)
 
         self.graphicsView.setStyleSheet(f"border-image:url(\'{input_p}\');")
 
@@ -780,17 +746,25 @@ class last_page(QDialog,QWidget,form_last):
             choice.append(final_data[(final_data['color_pred'] == color_pred) &
                                      (final_data['item_category'] == item_category)]['item_id'].sample(3).tolist())
 
-#########################################
+        ## 헤어 월드컵 우승 item_id 출력하는 함수
+        Black_Hair = pd.read_csv('BlackHair.csv', encoding='utf-8')
+        Hair1 = Black_Hair[Black_Hair['item_name'] == winner]
+        print(Black_Hair['item_id'])
+        Hair1.reset_index(drop=True, inplace=True)
+        Hair1.reset_index(drop=True, inplace=True)
+        Hair_id = Hair1['item_id'][0]
+
+
         # 코디 리스트가 들어갈 곳
         url_list = []
 
         # API 호출 및 코디 이미지 불러오기
         for i in range(3):
-            hair_code = {"itemId": 61190, "version": "367", "region": "KMS"}
+            hair_code = {"itemId": Hair_id, "version": "367", "region": "KMS"}
             cash_code = {"itemId": choice[0][i], "version": "367", "region": "KMS"}
             hat_code = {"itemId": choice[1][i], "version": "367", "region": "KMS"}
             overall_code = {"itemId": choice[2][i], "version": "367", "region": "KMS"}
-            face_code = {"itemId": 21078, "version": "367", "region": "KMS"}
+            face_code = {"itemId": face, "version": "367", "region": "KMS"}
             skin_code1 = {"itemId": 2016, "version": "367", "region": "KMS"}
             skin_code2 = {"itemId": 12016, "version": "367", "region": "KMS"}
 
@@ -851,7 +825,6 @@ class output(QDialog,QWidget,form_output):
         pygame.mixer.music.play()
 
         self.graphicsView_4.setStyleSheet(f"border-image:url(\'MaplePicture/map4.jpg\');")
-        print("실행중 5")
         self.graphicsView.setStyleSheet(f"border-image:url(\'0.jpg\');")
         self.graphicsView_2.setStyleSheet(f"border-image:url(\'1.jpg\');")
         self.graphicsView_3.setStyleSheet(f"border-image:url(\'2.jpg\');")
