@@ -1,28 +1,37 @@
 import sys
 from PyQt5.QtWidgets import *
+import PyQt5
 import os
-from PyQt5 import QtWidgets, uic,QtGui,QtCore
+from PyQt5 import QtWidgets, uic, QtGui,QtCore
 import random
+import PIL
 from PIL import Image
-from keras.models import load_model
-import requests
 import pandas as pd
 import numpy as np
 import dload
+import bs4
 from bs4 import BeautifulSoup
 import urllib.request
 import requests
 import pygame
 import json
+import glob
 from glob import glob
 import cv2
+import sklearn
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_score, recall_score, f1_score
+import PySide2
 from PySide2.QtWidgets import QMessageBox
+import pymysql
 
+# STEP 2: MySQL Connection 연결
+con = pymysql.connect(host='maple.mysql.database.azure.com', user='maple', password='giveup0930@',
+                      db='project', charset='utf8', port=3306,
+                      autocommit=True, cursorclass=pymysql.cursors.DictCursor)
 
 # 파일 불러오는 함수 생성
 def resource_path(relative_path):
@@ -674,6 +683,7 @@ class last_page(QDialog,QWidget,form_last):
 
 
     def output1(self):
+        global choice
         # 재 실행시 원래 있는 jpg 삭제하는 함수
         import os
         for i in range(3):
@@ -685,7 +695,7 @@ class last_page(QDialog,QWidget,form_last):
         #색상 추출 할 사진
         photo = input_p
 
-        # 모델 먼저 불러오기
+        # 모델 먼저 불러오기  모델 > 랜덤 포레스트
         cody_data = pd.read_csv('./cody_data.csv', encoding='euc-kr', index_col=0)
 
         # X, y 분리
@@ -861,13 +871,32 @@ class output(QDialog,QWidget,form_output):
 
     def printShtname3(self):
         global good2
-        good2 = self.comboBox.currentText()
+        good2 = self.comboBox_2.currentText()
 
     def printShtname4(self):
         global good3
-        good3 = self.comboBox.currentText()
+        good3 = self.comboBox_3.currentText()
 
     def end(self):
+        all_id = []
+        for i in range(3):
+            for j in range(3):
+                all_id.append(choice[i][j])
+        query = "INSERT INTO maple (item_id, score) VALUES (%s, %s)"
+
+        with con:
+            with con.cursor() as cur:
+                cur.execute(query, (all_id[0], good1))
+                cur.execute(query, (all_id[3], good1))
+                cur.execute(query, (all_id[6], good1))
+                cur.execute(query, (all_id[1], good2))
+                cur.execute(query, (all_id[4], good2))
+                cur.execute(query, (all_id[7], good2))
+                cur.execute(query, (all_id[2], good3))
+                cur.execute(query, (all_id[5], good3))
+                cur.execute(query, (all_id[8], good3))
+                con.commit()
+                print("완료")
         print(good1,good2,good3)
         # csv파일로 사용자가 입력하는 결과물의 선호도 데이터를 저장하여 선호도 기반으로 강화학습.
 
