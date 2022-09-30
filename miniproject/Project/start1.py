@@ -29,7 +29,7 @@ from PySide2.QtWidgets import QMessageBox
 import pymysql
 
 # STEP 2: MySQL Connection 연결
-con = pymysql.connect(host='maple.mysql.database.azure.com', user='maple', password='giveup0930@',
+con = pymysql.connect(host='maple.mysql.database.azure.com', user='maple', password='password',
                       db='project', charset='utf8', port=3306,
                       autocommit=True, cursorclass=pymysql.cursors.DictCursor)
 
